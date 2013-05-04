@@ -8,6 +8,7 @@ class pe_caproxy::master(
   file { $puppetmaster_conf:
     ensure  => file,
     content => template("${module_name}/puppetmaster.conf.erb"),
+    require => Augeas['puppet.conf ca_server'],
   }
   augeas{'puppet.conf ca' :
     context       => '/files//puppet.conf/master',
@@ -18,5 +19,9 @@ class pe_caproxy::master(
   augeas{'puppet.conf ca_server' :
     context       => '/files//puppet.conf/agent',
     changes       => "set ca_server ${ca_server}",
+  }
+  augeas{'puppet.conf server' :
+    context       => '/files//puppet.conf/agent',
+    changes       => "set server ${ca_server}",
   }
 }
