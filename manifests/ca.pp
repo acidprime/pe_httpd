@@ -12,4 +12,11 @@ class pe_caproxy::ca {
     allow      => '*',
     order      => 085,
   }
+  Auth_conf::Acl <| title == 'save-/facts'|> {
+    path       => '~ ^/facts/([^/]+)$',
+    auth       => 'yes',
+    acl_method => ['save'],
+    allow      => '$1',
+    order      => 095,
+  }
 }
