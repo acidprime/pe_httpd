@@ -19,4 +19,11 @@ class pe_caproxy::ca {
     allow      => '$1',
     order      => 095,
   }
+  exec { 'node:parameters':
+    path        => '/opt/puppet/bin:/bin',
+    cwd         => '/opt/puppet/share/puppet-dashboard',
+    environment => 'RAILS_ENV=production',
+    command     => "rake node:parameters name=${::clientcert} parameters=custom_auth_conf=false",
+    #  refreshonly => true,
+  }
 }
