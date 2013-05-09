@@ -1,9 +1,9 @@
-class pe_caproxy::master(
-  $ca_server           = $pe_caproxy::params::ca_server,
-  $cert_name           = $pe_caproxy::params::certname,
-  $puppetmaster_conf   = $pe_caproxy::params::puppetmaster_conf,
-  $puppet_service_name = $pe_caproxy::params::puppet_service_name,
-) inherits pe_caproxy::params {
+class pe_httpd::master(
+  $ca_server           = $pe_httpd::params::ca_server,
+  $cert_name           = $pe_httpd::params::certname,
+  $puppetmaster_conf   = $pe_httpd::params::puppetmaster_conf,
+  $puppet_service_name = $pe_httpd::params::puppet_service_name,
+) inherits pe_httpd::params {
 
   # Template uses: @cert_name , @ca_server
   file { $puppetmaster_conf:
@@ -33,5 +33,4 @@ class pe_caproxy::master(
       ensure => running,
     }
   }
-
 }

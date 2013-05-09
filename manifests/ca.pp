@@ -1,4 +1,4 @@
-class pe_caproxy::ca {
+class pe_httpd::ca {
   class { 'auth_conf::defaults':
     master_certname => $::fact_puppetmaster_certname,
   }
