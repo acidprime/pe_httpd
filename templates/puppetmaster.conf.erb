@@ -18,8 +18,13 @@ Listen <%= @masterport %>
 <% end -%>
 
     SSLVerifyClient optional
+    SSLHonorCipherOrder on
     SSLVerifyDepth  1
-    SSLOptions +StdEnvVars
+
+    # The `ExportCertData` option is needed for agent certificate expiration warnings
+    # And for accessing certificate extensions in the trusted data hash
+    SSLOptions +StdEnvVars +ExportCertData
+
 <% if @proxy_ca_server -%>
 <%# Enable SSLProxyEngine for proxying SSL connections -%>
     SSLProxyEngine On
@@ -34,11 +39,16 @@ Listen <%= @masterport %>
     RequestHeader set X-Client-DN %{SSL_CLIENT_S_DN}e
     RequestHeader set X-Client-Verify %{SSL_CLIENT_VERIFY}e
 
+    PassengerEnabled On
     DocumentRoot /var/opt/lib/pe-puppetmaster/public/
+    ErrorLog /var/log/pe-httpd/puppetmaster.error.log
+    TransferLog /var/log/pe-httpd/puppetmaster.access.log
     <Directory /var/opt/lib/pe-puppetmaster/>
         Options None
         AllowOverride None
         Order allow,deny
         allow from all
     </Directory>
+
+    Alias /packages /opt/puppet/packages/public
 </VirtualHost>
